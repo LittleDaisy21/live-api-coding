@@ -6,31 +6,11 @@
   </head>
 
   <body>
-    <h1>Список задач</h1>
-    <ul class="tasks" id="list">
-      <!— Список рендерится из JS —>
-    </ul>
-    <br />
-    <div class="form">
-      <h3 class="form-title">Форма добавления</h3>
-      <div class="form-row">
-        Что нужно сделать:
-        <input
-          type="text"
-          id="text-input"
-          class="input"
-          placeholder="Выпить кофе"
-        />
-      </div>
-      <br />
-      <button class="button" id="add-button">Добавить</button>
-    </div>
+   <div id="app"></div>
   </body>
 
   <script>
-    const buttonElement = document.getElementById("add-button");
-    const listElement = document.getElementById("list");
-    const textInputElement = document.getElementById("text-input");
+    
 
     // TODO: Получать из хранилища данных
     let tasks = [];
@@ -64,7 +44,8 @@
     };
 
     const renderTasks = () => {
-      const tasksHtml = tasks
+        const appEl = document.getElementById("app");
+        const tasksHtml = tasks
         .map((task) => {
           return `
           <li class="task">
@@ -76,7 +57,54 @@
         })
         .join("");
 
-      listElement.innerHTML = tasksHtml;
+        const appHtml = ` 
+                    <h1>Список задач</h1>
+                    <div class="form">
+                        <h3 class="form-title">Форма входа</h3>
+                        <div class="form-row">
+                        Логин
+                        <input
+                            type="text"
+                            id="login-input"
+                            class="input"
+                        />
+                        <br />
+                        Пароль
+                        <input
+                            type="text"
+                            id="login-input"
+                            class="input"
+                        />
+                        </div>
+                        <br />
+                        <button class="button" id="login-button">Войти</button>
+                    </div>
+
+                    <ul class="tasks" id="list">
+                    <!-- Список рендерится из JS -->
+                    ${tasksHtml}
+                    </ul>
+                    <br />
+                    <div class="form">
+                    <h3 class="form-title">Форма добавления</h3>
+                    <div class="form-row">
+                        Что нужно сделать:
+                        <input
+                        type="text"
+                        id="text-input"
+                        class="input"
+                        placeholder="Выпить кофе"
+                        />
+                    </div>
+                    <br />
+                    <button class="button" id="add-button">Добавить</button>
+                    </div>`
+
+
+      appEl.innerHTML = appHtml;
+      const buttonElement = document.getElementById("add-button");
+      const listElement = document.getElementById("list");
+      const textInputElement = document.getElementById("text-input");
       const deleteButtons = document.querySelectorAll(".delete-button");
 
       for (const deleteButton of deleteButtons) {
@@ -102,11 +130,8 @@
             });
         });
       }
-    };
-
-    fetchTodosAndRender();
-
-    buttonElement.addEventListener("click", () => {
+   
+      buttonElement.addEventListener("click", () => {
       if (textInputElement.value === "") {
         return;
       }
@@ -145,5 +170,10 @@
           buttonElement.textContent = "Добавить";
         });
     });
+    };
+
+    fetchTodosAndRender();
+
+ 
   </script>
 </html>
