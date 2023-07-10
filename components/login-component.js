@@ -1,11 +1,24 @@
 import { loginUser } from "../api.js";
 
 export function renderLoginComponent({ appEl, setToken, fetchTodosAndRender }){
+
+    let isLoginMode = false;
+
+    const renderForm = () => {
     const appHtml = ` 
                 <h1>Список задач</h1>
                 <div class="form">
-                    <h3 class="form-title">Форма входа</h3>
+                    <h3 class="form-title">Форма ${isLoginMode ? 'входа' : 'регистрации'}</h3>
                     <div class="form-row">
+                    ${isLoginMode ? '' : 
+                    `Имя
+                    <input
+                        type="password"
+                        id="name-input"
+                        class="input"
+                    />`}
+                    
+                    <br />
                     Логин
                     <input
                         type="text"
@@ -21,7 +34,9 @@ export function renderLoginComponent({ appEl, setToken, fetchTodosAndRender }){
                     />
                     </div>
                     <br />
-                    <button class="button" id="login-button">Войти</button>
+                    <button class="button" id="login-button">${isLoginMode ? 'Войти' : 'Зарегистрироваться'}</button>
+                    <br /> <br />
+                    <button class="button" id="toggle-button">Перейти ${isLoginMode ? 'к регистрации' : 'ко входу'}</button>
                 </div>
   `;
 
@@ -53,4 +68,13 @@ export function renderLoginComponent({ appEl, setToken, fetchTodosAndRender }){
             alert(error.message)
         })
   });
+
+  document.getElementById('toggle-button').addEventListener('click', () => {
+    isLoginMode = !isLoginMode;
+    renderForm();
+  });
+    };
+
+    renderForm();
+
 }
